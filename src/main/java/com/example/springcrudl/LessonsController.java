@@ -1,7 +1,9 @@
 package com.example.springcrudl;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -38,6 +40,15 @@ public class LessonsController {
         lesson.setDeliveredOn(body.getDeliveredOn());
 
         return this.repository.save(lesson);
+    }
+    @GetMapping("/find/{title}")
+    public Lesson getByTitle(@PathVariable("title")String title){
+        return this.repository.findByTitle(title);
+    }
+    @GetMapping("/between")
+    public List<Lesson> getByDates(@RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date date1,
+                             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date date2){
+        return this.repository.findByDeliveredOnBetween(date1, date2);
     }
 
 
